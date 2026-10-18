@@ -1,0 +1,13 @@
+name: CLEAN_ORDERS
+comment: "Orders with normalized status and computed total"
+columns:
+  - name: ORDER_ID
+    datatype: NUMBER(38,0)
+  - name: ORDER_DATE
+    datatype: DATE
+  - name: CUSTOMER
+    datatype: VARCHAR
+  - name: STATUS
+    datatype: VARCHAR
+  - name: TOTAL
+    datatype: FLOAT

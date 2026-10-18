@@ -1,0 +1,5 @@
+database: PINKY_EXAMPLE
+schema: CORE
+git_repository: PINKY_EXAMPLE.CORE.EXAMPLE_REPO
+handler_path: "@PINKY_EXAMPLE.CORE.EXAMPLE_REPO/branches/main/handler"
+sp_prefix: PINKY_EXAMPLE.CORE

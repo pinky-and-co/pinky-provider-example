@@ -1,0 +1,45 @@
+# Schema scope — PINKY_EXAMPLE.CORE: 3 tables, 5 procedures, 3 views, 2 functions, one DAG.
+# Run:  pinky-provider plan  --env SANDBOX --source schema/manifest.yml
+#       pinky-provider apply --env SANDBOX --source schema/manifest.yml
+scope: schema
+target: PINKY_EXAMPLE.CORE
+artifact_source:
+  strategy: git
+  repository: PINKY_EXAMPLE.CORE.EXAMPLE_REPO
+
+resources:
+  - table/raw_orders
+  - table/clean_orders
+  - table/daily_sales
+  - procedure/sp_ingest
+  - procedure/sp_clean
+  - procedure/sp_aggregate
+  - procedure/sp_quality
+  - procedure/sp_report
+  - function/order_total
+  - function/normalize_status
+  - view/v_orders_clean
+  - view/v_daily_sales
+  - view/v_status_counts
+
+dag:
+  name: EXAMPLE_DAG
+  trigger_mode: ON_DEMAND
+  wrapper_schema: "{{ vars.sp_prefix }}"
+  notify_on: NEVER
+  comment: "pinky-provider-example pipeline"
+  tasks:
+    - name: INGEST
+      target_sp: "{{ vars.sp_prefix }}.SP_INGEST"
+    - name: CLEAN
+      target_sp: "{{ vars.sp_prefix }}.SP_CLEAN"
+      predecessors: [INGEST]
+    - name: AGGREGATE
+      target_sp: "{{ vars.sp_prefix }}.SP_AGGREGATE"
+      predecessors: [CLEAN]
+    - name: QUALITY
+      target_sp: "{{ vars.sp_prefix }}.SP_QUALITY"
+      predecessors: [CLEAN]
+    - name: REPORT
+      target_sp: "{{ vars.sp_prefix }}.SP_REPORT"
+      predecessors: [AGGREGATE, QUALITY]

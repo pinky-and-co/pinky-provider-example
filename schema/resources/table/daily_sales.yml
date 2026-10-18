@@ -1,0 +1,9 @@
+name: DAILY_SALES
+comment: "Sales aggregated per day"
+columns:
+  - name: ORDER_DATE
+    datatype: DATE
+  - name: ORDERS
+    datatype: NUMBER(38,0)
+  - name: REVENUE
+    datatype: FLOAT
