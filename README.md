@@ -10,7 +10,7 @@ Reference project deployed with [pinky-provider](https://github.com/pinky-and-co
 
 ## The DAG
 
-`EXAMPLE_DAG` (on demand): `INGEST` -> `CLEAN` -> `AGGREGATE` and `QUALITY` -> `REPORT`.
+`EXAMPLE_DAG` (on demand): `INGEST` -> `CLEAN` -> (`AGGREGATE`, `QUALITY`) -> `REPORT`; `REPORT` waits for both branches.
 Each task calls one stored procedure taking one `VARIANT` argument and returning a `VARIANT`.
 
 ## Deploy
