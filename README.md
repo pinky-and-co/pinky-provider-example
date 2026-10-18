@@ -15,6 +15,10 @@ Each task calls one stored procedure taking one `VARIANT` argument and returning
 
 ## Deploy
 
+Prerequisites: a Git API integration allowing this repo's GitHub org, and `handler/` pushed to
+`main` — Snowflake reads the code from GitHub (`handler_path` in `schema/vars/SANDBOX.yml`), not
+from your disk.
+
 1. Apply the account manifest (creates the database):
 
    ```bash
