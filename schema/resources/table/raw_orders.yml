@@ -1,0 +1,15 @@
+name: RAW_ORDERS
+comment: "Raw orders as ingested"
+columns:
+  - name: ORDER_ID
+    datatype: NUMBER(38,0)
+  - name: ORDER_DATE
+    datatype: DATE
+  - name: CUSTOMER
+    datatype: VARCHAR
+  - name: STATUS
+    datatype: VARCHAR
+  - name: QUANTITY
+    datatype: NUMBER(38,0)
+  - name: UNIT_PRICE
+    datatype: FLOAT

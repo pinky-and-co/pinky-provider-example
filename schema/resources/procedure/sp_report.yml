@@ -1,0 +1,15 @@
+name: SP_REPORT
+arguments:
+  - name: ARGS
+    datatype: VARIANT
+return_type:
+  datatype: VARIANT
+language_config:
+  runtime_version: "3.11"
+  packages:
+    - snowflake-snowpark-python
+  imports:
+    - "{{ vars.handler_path }}/sp_report.py"
+  handler: sp_report.run
+execute_as: CALLER
+comment: "Final report"

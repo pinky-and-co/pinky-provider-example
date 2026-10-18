@@ -1,0 +1,13 @@
+name: NORMALIZE_STATUS
+arguments:
+  - name: STATUS
+    datatype: VARCHAR
+return_type:
+  datatype: VARCHAR
+language_config:
+  runtime_version: "3.11"
+  packages: []
+  imports:
+    - "{{ vars.handler_path }}/normalize_status.py"
+  handler: normalize_status.run
+comment: "Upper-case, trimmed status"

@@ -1,0 +1,6 @@
+name: V_DAILY_SALES
+comment: "Daily sales, newest first"
+query: |
+  SELECT ORDER_DATE, ORDERS, REVENUE
+  FROM PINKY_EXAMPLE.CORE.DAILY_SALES
+  ORDER BY ORDER_DATE DESC

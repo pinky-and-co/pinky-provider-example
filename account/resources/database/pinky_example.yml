@@ -1,0 +1,2 @@
+name: "{{ vars.database }}"
+comment: "pinky-provider-example project database"

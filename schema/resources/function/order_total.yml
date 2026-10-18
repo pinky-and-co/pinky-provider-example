@@ -1,0 +1,15 @@
+name: ORDER_TOTAL
+arguments:
+  - name: QUANTITY
+    datatype: NUMBER(38,0)
+  - name: UNIT_PRICE
+    datatype: FLOAT
+return_type:
+  datatype: FLOAT
+language_config:
+  runtime_version: "3.11"
+  packages: []
+  imports:
+    - "{{ vars.handler_path }}/order_total.py"
+  handler: order_total.run
+comment: "Quantity times unit price"

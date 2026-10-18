@@ -1,0 +1,6 @@
+# Account scope — the PINKY_EXAMPLE database.
+# Run:  pinky-provider plan  --env SANDBOX --source account/manifest.yml
+#       pinky-provider apply --env SANDBOX --source account/manifest.yml
+scope: account
+resources:
+  - database/pinky_example

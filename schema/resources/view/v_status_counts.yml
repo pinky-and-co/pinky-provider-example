@@ -1,0 +1,6 @@
+name: V_STATUS_COUNTS
+comment: "Order count per status"
+query: |
+  SELECT STATUS, COUNT(*) AS ORDERS
+  FROM PINKY_EXAMPLE.CORE.CLEAN_ORDERS
+  GROUP BY STATUS

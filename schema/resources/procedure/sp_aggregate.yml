@@ -1,0 +1,15 @@
+name: SP_AGGREGATE
+arguments:
+  - name: ARGS
+    datatype: VARIANT
+return_type:
+  datatype: VARIANT
+language_config:
+  runtime_version: "3.11"
+  packages:
+    - snowflake-snowpark-python
+  imports:
+    - "{{ vars.handler_path }}/sp_aggregate.py"
+  handler: sp_aggregate.run
+execute_as: CALLER
+comment: "CLEAN_ORDERS to DAILY_SALES"
