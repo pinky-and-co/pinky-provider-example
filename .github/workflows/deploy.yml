@@ -1,0 +1,85 @@
+name: deploy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write  # pragma: allowlist secret
+  contents: read
+
+env:
+  SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+  SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+  SNOWFLAKE_OIDC_USER: ${{ vars.SNOWFLAKE_OIDC_USER }}
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: sandbox
+    strategy:
+      fail-fast: false
+      matrix:
+        auth: [keypair, oidc]
+    env:
+      AUTH: ${{ matrix.auth }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinky-provider
+        run: pip install "pinky-provider==0.1.0.dev3"
+      # plan exits 2 when it detects changes: expected on a PR, only other codes fail.
+      - name: Plan account manifest
+        env:
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          python ci/write_connection.py
+          pinky-provider plan --env SANDBOX --source account/manifest.yml || [ $? -eq 2 ]
+      - name: Plan schema manifest
+        env:
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          python ci/write_connection.py
+          pinky-provider plan --env SANDBOX --source schema/manifest.yml || [ $? -eq 2 ]
+
+  apply:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: sandbox
+    concurrency:
+      group: deploy-sandbox
+      cancel-in-progress: false
+    env:
+      AUTH: oidc
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinky-provider
+        run: pip install "pinky-provider==0.1.0.dev3"
+      # The GitHub ID token is short-lived: the connection is rewritten before each Snowflake step.
+      - name: Fetch the GIT REPOSITORY
+        run: |
+          python ci/write_connection.py
+          python ci/fetch_repo.py
+      - name: Install DAG wrappers
+        run: |
+          python ci/write_connection.py
+          pinky-provider install-wrappers --schema PINKY_EXAMPLE.CORE
+      - name: Apply account manifest
+        run: |
+          python ci/write_connection.py
+          pinky-provider apply --env SANDBOX --source account/manifest.yml --assume-yes
+      - name: Apply schema manifest
+        run: |
+          python ci/write_connection.py
+          pinky-provider apply --env SANDBOX --source schema/manifest.yml --assume-yes
+      - name: Run the DAG
+        run: |
+          python ci/write_connection.py
+          python ci/run_dag.py
