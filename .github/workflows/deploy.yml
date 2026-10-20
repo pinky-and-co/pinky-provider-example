@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install pinky-provider
-        run: pip install "pinky-provider @ git+https://github.com/pinky-and-co/pinky-provider@main"
+        run: pip install "pinky-provider==0.1.0.dev3"
       # plan exits 2 when it detects changes: expected on a PR, only other codes fail.
       - name: Plan account manifest
         env:
@@ -61,7 +61,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install pinky-provider
-        run: pip install "pinky-provider @ git+https://github.com/pinky-and-co/pinky-provider@main"
+        run: pip install "pinky-provider==0.1.0.dev3"
       # The GitHub ID token is short-lived: the connection is rewritten before each Snowflake step.
       - name: Fetch the GIT REPOSITORY
         run: |
