@@ -63,14 +63,14 @@ Each Snowflake step first runs `ci/write_connection.py`, which writes `~/.snowfl
 | Variable | `SNOWFLAKE_OIDC_USER` | Snowflake user federated with the GitHub OIDC identity (`oidc`). |
 | Secret | `SNOWFLAKE_PRIVATE_KEY` | Unencrypted PKCS8 PEM private key of `PINKY_CI_SVC` (`keypair`). |
 
-The key-pair user is `PINKY_CI_SVC` (role `DEPLOYER`). The OIDC user is created once, by hand (the Core API cannot declare a workload identity), next to the Git repository object. The subject is `repo:pinky-and-co/pinky-provider-example:environment:sandbox`:
+The key-pair user is `PINKY_CI_SVC` (role `DEPLOYER`). The OIDC user is created once, by hand (the Core API cannot declare a workload identity), next to the Git repository object. The subject is the one GitHub emits for this repository, with the owner and repository ids (`gh api repos/pinky-and-co/pinky-provider-example --jq "\(.owner.id) \(.id)"`):
 
 ```sql
 CREATE USER <oidc user> TYPE = SERVICE
   WORKLOAD_IDENTITY = (
     TYPE = OIDC
     ISSUER = 'https://token.actions.githubusercontent.com'
-    SUBJECT = 'repo:pinky-and-co/pinky-provider-example:environment:sandbox'
+    SUBJECT = 'repo:pinky-and-co@285046552/pinky-provider-example@1424625879:environment:sandbox'
   )
   DEFAULT_ROLE = DEPLOYER;
 GRANT ROLE DEPLOYER TO USER <oidc user>;
