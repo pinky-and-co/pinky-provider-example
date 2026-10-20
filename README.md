@@ -63,7 +63,7 @@ Each Snowflake step first runs `ci/write_connection.py`, which writes `~/.snowfl
 | Variable | `SNOWFLAKE_OIDC_USER` | Snowflake user federated with the GitHub OIDC identity (`oidc`). |
 | Secret | `SNOWFLAKE_PRIVATE_KEY` | Unencrypted PKCS8 PEM private key of `PINKY_CI_SVC` (`keypair`). |
 
-The key-pair user is `PINKY_CI_SVC` (role `DEPLOYER`). The OIDC user is created once, by hand (the Core API cannot declare a workload identity), next to the Git repository object. The subject is the one GitHub emits for this repository, with the owner and repository ids (`gh api repos/pinky-and-co/pinky-provider-example --jq "\(.owner.id) \(.id)"`):
+The key-pair user is `PINKY_CI_SVC` (role `DEPLOYER`). The OIDC user is created once, by hand (the Core API cannot declare a workload identity), next to the Git repository object. The subject is the one GitHub emits for this repository, with the owner and repository ids (for a fork, use your own `<owner>/<repo>`: `gh api repos/pinky-and-co/pinky-provider-example --jq "\(.owner.id) \(.id)"`):
 
 ```sql
 CREATE USER <oidc user> TYPE = SERVICE
@@ -76,4 +76,4 @@ CREATE USER <oidc user> TYPE = SERVICE
 GRANT ROLE DEPLOYER TO USER <oidc user>;
 ```
 
-Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs `pinky-provider` from `main` until the release is published.
+Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs the published `pinky-provider==0.1.0.dev3` from PyPI.
