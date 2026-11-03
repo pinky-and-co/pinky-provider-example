@@ -25,7 +25,7 @@ from your disk.
    pinky-provider apply --env SANDBOX --source account/manifest.yml
    ```
 
-2. Create, once, the schema and the Git repository object that serves `handler/`
+1. Create, once, the schema and the Git repository object that serves `handler/`
    (`artifact_source` fetches it before the schema manifest is applied):
 
    ```sql
@@ -35,7 +35,7 @@ from your disk.
      ORIGIN = 'https://github.com/pinky-and-co/pinky-provider-example.git';
    ```
 
-3. Install the DAG wrapper procedures in the schema, then apply the schema manifest:
+1. Install the DAG wrapper procedures in the schema, then apply the schema manifest:
 
    ```bash
    pinky-provider install-wrappers --schema PINKY_EXAMPLE.CORE
@@ -43,7 +43,7 @@ from your disk.
    pinky-provider apply --env SANDBOX --source schema/manifest.yml
    ```
 
-4. Run the DAG: `EXECUTE TASK PINKY_EXAMPLE.CORE.EXAMPLE_DAG;`
+1. Run the DAG: `EXECUTE TASK PINKY_EXAMPLE.CORE.EXAMPLE_DAG;`
 
 ## CI
 
@@ -76,4 +76,4 @@ CREATE USER <oidc user> TYPE = SERVICE
 GRANT ROLE DEPLOYER TO USER <oidc user>;
 ```
 
-Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs the published `pinky-provider==0.1.0.dev3` from PyPI.
+Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs the published `pinky-provider==0.1.0.dev4` from PyPI.
