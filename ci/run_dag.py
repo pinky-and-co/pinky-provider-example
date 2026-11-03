@@ -21,7 +21,10 @@ BAD_STATES = {"FAILED", "CANCELLED", "SKIPPED", "FAILED_AND_AUTO_SUSPENDED"}
 
 
 def log(msg: str) -> None:
-    print(f"[{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}] {msg}", flush=True)
+    print(
+        f"[{datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}] {msg}",
+        flush=True,
+    )
 
 
 def run_states(session, since: str) -> dict[str, tuple[str, str | None]]:
@@ -48,7 +51,11 @@ def main() -> int:
     from snowflake.snowpark import Session
 
     session = Session.builder.getOrCreate()
-    since = session.sql("SELECT DATEADD('minute', -1, CURRENT_TIMESTAMP())").collect()[0][0].isoformat()
+    since = (
+        session.sql("SELECT DATEADD('minute', -1, CURRENT_TIMESTAMP())")
+        .collect()[0][0]
+        .isoformat()
+    )
     session.sql(f"EXECUTE TASK {DATABASE}.{SCHEMA}.{DAG}").collect()
     log(f"EXECUTE TASK {DATABASE}.{SCHEMA}.{DAG} sent")
 
