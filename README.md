@@ -76,4 +76,4 @@ CREATE USER <oidc user> TYPE = SERVICE
 GRANT ROLE DEPLOYER TO USER <oidc user>;
 ```
 
-Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs the published `pinky-provider==0.1.0.dev4` from PyPI.
+Set `SNOWFLAKE_OIDC_USER` to `<oidc user>`. The workflow installs the published `pinky-provider==0.1.0.dev5` from PyPI.
