@@ -32,7 +32,10 @@ def _q(value: str) -> str:
 def _github_id_token() -> str:
     url = os.environ["ACTIONS_ID_TOKEN_REQUEST_URL"] + f"&audience={AUDIENCE}"
     req = urllib.request.Request(
-        url, headers={"Authorization": f"bearer {os.environ['ACTIONS_ID_TOKEN_REQUEST_TOKEN']}"}
+        url,
+        headers={
+            "Authorization": f"bearer {os.environ['ACTIONS_ID_TOKEN_REQUEST_TOKEN']}"
+        },
     )
     with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310 - GitHub-provided https URL
         token = json.load(resp)["value"]
